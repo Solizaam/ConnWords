@@ -11,6 +11,7 @@ export default async function handler(req) {
 
   const body = await req.json();
   const base = (process.env.LLM_BASE_URL || "https://api.openai.com/v1").replace(/\/+$/, "");
+  if (process.env.LLM_MODEL) body.model = process.env.LLM_MODEL;
 
   const upstream = await fetch(`${base}/chat/completions`, {
     method: "POST",
