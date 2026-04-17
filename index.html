@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ConnWords - 每日猜词</title>
+    <meta name="description" content="每天一个新词，用最少的次数猜中它。支持英文（CEFR A1–C2）和中文词语 / 成语，猜错了有 AI 提示。" />
+    <meta property="og:title" content="ConnWords - 每日猜词" />
+    <meta property="og:description" content="每天一个新词，用最少的次数猜中它。支持英文和中文。" />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="data:," />
+    <link rel="stylesheet" href="./style.css" />
+  </head>
+  <body>
+    <main class="container">
+      <header class="header">
+        <div>
+          <h1 class="title">ConnWords</h1>
+          <p class="subtitle">每天一个新词。输入你的猜测，猜错了给你提示，直到猜中。支持英文（CEFR A1–C2）和中文词语 / 成语。</p>
+          <div class="modeTabs" role="tablist" aria-label="语言模式">
+            <button id="tabEn" class="btn tabBtn" type="button" role="tab" aria-selected="true">英文</button>
+            <button id="tabCn" class="btn tabBtn" type="button" role="tab" aria-selected="false">中文</button>
+          </div>
+          <div class="difficultyRow">
+            <span class="diffLabel" id="diffLabel">词库难度：</span>
+            <div id="enControls" class="inlineControls">
+              <button id="btnDiffA1" class="btn diffBtn" type="button" title="CEFR A1：入门级，最基础的日常词汇">A1</button>
+              <button id="btnDiffA2" class="btn diffBtn" type="button" title="CEFR A2：基础级，简单日常交流词汇">A2</button>
+              <button id="btnDiffB1" class="btn diffBtn" type="button" title="CEFR B1：中级，能处理日常话题的词汇">B1</button>
+              <button id="btnDiffB2" class="btn diffBtn" type="button" title="CEFR B2：中高级，能讨论复杂话题的词汇">B2</button>
+              <button id="btnDiffC1" class="btn diffBtn" type="button" title="CEFR C1：高级，流利表达所需词汇">C1</button>
+              <button id="btnDiffC2" class="btn diffBtn" type="button" title="CEFR C2：精通级，近母语水平词汇">C2</button>
+            </div>
+            <div id="cnControls" class="inlineControls" hidden>
+              <button id="btnCnWord" class="btn diffBtn" type="button" title="中文词语（长度可变）">词语</button>
+              <button id="btnCnIdiom" class="btn diffBtn" type="button" title="中文成语（固定 4 字）">成语</button>
+            </div>
+          </div>
+          <div id="cnDiffRow" class="difficultyRow" hidden>
+            <span class="diffLabel">难度：</span>
+            <div class="inlineControls">
+              <button id="btnCnDiffNormal" class="btn diffBtn" type="button" title="常见词语">普通</button>
+              <button id="btnCnDiffHard" class="btn diffBtn" type="button" title="罕见、古旧或高难度词语">困难</button>
+            </div>
+          </div>
+        </div>
+        <div class="meta">
+          <div class="pill">
+            <span class="pillLabel">今日</span>
+            <span id="dateKey" class="pillValue">-</span>
+          </div>
+        </div>
+      </header>
+
+      <section class="card">
+        <form id="guessForm" class="row" autocomplete="off">
+          <label class="field">
+            <span id="guessLabel" class="fieldLabel">输入英文单词</span>
+            <input
+              id="guessInput"
+              class="input"
+              inputmode="latin"
+              spellcheck="false"
+              autocapitalize="none"
+              placeholder="例如: apple"
+              required
+            />
+          </label>
+          <button id="btnGuess" class="btn btnPrimary" type="submit">猜</button>
+        </form>
+
+        <div class="row2">
+          <div class="stat">
+            <div class="statLabel">已尝试</div>
+            <div id="tryCount" class="statValue">0</div>
+          </div>
+          <div class="stat" id="wordLenStat" hidden>
+            <div class="statLabel">字数</div>
+            <div id="wordLenValue" class="statValue">-</div>
+          </div>
+          <div class="stat">
+            <div class="statLabel">状态</div>
+            <div id="statusText" class="statValue">加载中…</div>
+          </div>
+          <div class="actions">
+            <button id="btnShare" class="btn btnPrimary" type="button">分享结果</button>
+            <button id="btnSettings" class="btn btnGhost" type="button">语义提示设置</button>
+            <button id="btnReset" class="btn btnGhost" type="button">重置今天</button>
+            <button id="btnYesterday" class="btn btnGhost" type="button">昨日答案</button>
+            <button id="btnHelp" class="btn btnGhost" type="button">提示规则</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="grid">
+        <section class="card">
+          <h2 class="cardTitle">AI 关系提示</h2>
+          <div id="hintBox" class="hintBox">先输入一个单词试试。</div>
+        </section>
+
+        <section class="card">
+          <button id="btnToggleHistory" class="cardTitleBtn" type="button" aria-expanded="true" aria-controls="historyList">
+            <h2 class="cardTitle">猜测历史</h2>
+            <span class="collapseChevron" aria-hidden="true">▾</span>
+          </button>
+          <ol id="historyList" class="history"></ol>
+        </section>
+      </section>
+
+      <dialog id="helpDialog" class="dialog">
+        <div class="dialogInner">
+          <h2 class="dialogTitle">提示规则</h2>
+          <ul class="dialogList">
+            <li>会给出长度、首尾字母、同位置命中、字母重叠、编辑距离等线索。</li>
+            <li>提示是"引导式"的：你猜得越接近，提示会越具体。</li>
+            <li>如果开启"语义提示"，会尝试根据词义关系给引导（需要你配置 API Key）。</li>
+          </ul>
+          <div class="dialogActions">
+            <button id="btnCloseHelp" class="btn btnPrimary" type="button">知道了</button>
+          </div>
+        </div>
+      </dialog>
+
+      <dialog id="settingsDialog" class="dialog">
+        <div class="dialogInner">
+          <h2 class="dialogTitle">语义提示设置</h2>
+          <div class="settingsGrid">
+            <label class="switchRow">
+              <input id="semanticEnabled" type="checkbox" />
+              <span>开启语义提示（优先使用词义关联提示）</span>
+            </label>
+
+            <label class="field">
+              <span class="fieldLabel">API Base URL（OpenAI 兼容）</span>
+              <input id="apiBaseUrl" class="input" placeholder="https://api.openai.com/v1" />
+            </label>
+
+            <label class="field">
+              <span class="fieldLabel">Model</span>
+              <input id="apiModel" class="input" placeholder="gpt-4o-mini / gpt-4.1-mini / 你的模型名" />
+            </label>
+
+            <label class="field">
+              <span class="fieldLabel">API Key（只保存在本机浏览器）</span>
+              <input id="apiKey" class="input" placeholder="sk-..." />
+            </label>
+          </div>
+
+          <p class="settingsNote">
+            说明：开启后，每次猜错会调用接口生成一段"词义关系提示"。失败时会自动回退到本地字母提示。
+          </p>
+          <div class="dialogActions">
+            <button id="btnSaveSettings" class="btn btnPrimary" type="button">保存</button>
+            <button id="btnCloseSettings" class="btn btnGhost" type="button">关闭</button>
+          </div>
+        </div>
+      </dialog>
+
+      <dialog id="yesterdayDialog" class="dialog">
+        <div class="dialogInner">
+          <h2 class="dialogTitle">昨日答案</h2>
+          <p id="yesterdayModeLabel" class="dialogModeLabel"></p>
+          <div id="yesterdayAnswer" class="answerDisplay"></div>
+          <div class="dialogActions">
+            <button id="btnCloseYesterday" class="btn btnPrimary" type="button">关闭</button>
+          </div>
+        </div>
+      </dialog>
+
+      <footer class="footer">
+        <span id="footerMsg" class="footerMsg"></span>
+      </footer>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.12.0/sql-wasm.js"></script>
+    <script src="./game.js"></script>
+  </body>
+</html>

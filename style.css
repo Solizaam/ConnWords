@@ -1,0 +1,431 @@
+:root{
+  --bg: #0b1020;
+  --card: rgba(255,255,255,.06);
+  --card2: rgba(255,255,255,.08);
+  --text: rgba(255,255,255,.92);
+  --muted: rgba(255,255,255,.65);
+  --border: rgba(255,255,255,.12);
+  --shadow: 0 14px 40px rgba(0,0,0,.35);
+  --primary: #6ea8fe;
+  --primary2: #8ad2ff;
+  --danger: #ff6b6b;
+  --ok: #51cf66;
+  --radius: 16px;
+  --font: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Microsoft YaHei", sans-serif;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:var(--font);
+  color:var(--text);
+  background:
+    radial-gradient(1200px 600px at 15% 10%, rgba(110,168,254,.25), transparent 55%),
+    radial-gradient(900px 500px at 85% 20%, rgba(138,210,255,.18), transparent 60%),
+    radial-gradient(800px 500px at 50% 95%, rgba(81,207,102,.10), transparent 60%),
+    linear-gradient(180deg, #070a14, var(--bg));
+}
+
+.container{
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 28px 18px 40px;
+}
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  gap:16px;
+  margin-bottom: 18px;
+}
+
+.title{
+  font-size: 32px;
+  line-height: 1.1;
+  letter-spacing: .2px;
+  margin: 0 0 6px;
+}
+.subtitle{
+  margin: 0;
+  color: var(--muted);
+  max-width: 62ch;
+}
+
+.modeTabs{
+  display:flex;
+  gap:8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.tabBtn{
+  height: 30px;
+  padding: 0 14px;
+  font-size: 13px;
+  border-radius: 999px;
+}
+.tabActive{
+  border-color: rgba(110,168,254,.8);
+  background: linear-gradient(180deg, rgba(110,168,254,.30), rgba(110,168,254,.14));
+  color: var(--primary2);
+}
+.inlineControls{
+  display:inline-flex;
+  gap:8px;
+  flex-wrap: wrap;
+}
+.inlineControls[hidden]{ display:none }
+
+.meta{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  flex-wrap:wrap;
+  justify-content:flex-end;
+}
+
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding: 8px 10px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.04);
+  border-radius: 999px;
+}
+.pillLabel{color:var(--muted); font-size:12px}
+.pillValue{font-variant-numeric: tabular-nums; font-size:12px}
+
+.card{
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+.cardTitle{
+  margin: 0;
+  font-size: 15px;
+  color: rgba(255,255,255,.86);
+  letter-spacing: .2px;
+}
+.cardTitleBtn{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin: 0 0 10px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+}
+.cardTitleBtn:hover .cardTitle{ color: var(--primary2) }
+.collapseChevron{
+  font-size: 16px;
+  color: var(--muted);
+  transition: transform .2s ease;
+  line-height: 1;
+}
+.cardTitleBtn[aria-expanded="false"] .collapseChevron{
+  transform: rotate(-90deg);
+}
+
+.row{
+  display:flex;
+  gap:10px;
+  align-items:flex-end;
+}
+.row2{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  justify-content:space-between;
+  margin-top: 12px;
+  flex-wrap:wrap;
+}
+
+.field{flex:1; display:flex; flex-direction:column; gap:8px;}
+.fieldLabel{font-size:12px; color: var(--muted);}
+
+.input{
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.22);
+  color: var(--text);
+  outline: none;
+}
+.input:focus{
+  border-color: rgba(110,168,254,.6);
+  box-shadow: 0 0 0 4px rgba(110,168,254,.18);
+}
+
+.btn{
+  height: 44px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.16);
+  background: rgba(255,255,255,.05);
+  color: var(--text);
+  cursor:pointer;
+  transition: transform .05s ease, background .12s ease, border-color .12s ease;
+  user-select:none;
+  white-space:nowrap;
+}
+.btn:hover{background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.22)}
+.btn:active{transform: translateY(1px)}
+.btn:disabled{opacity:.55; cursor:not-allowed}
+
+.btnPrimary{
+  border-color: rgba(110,168,254,.55);
+  background: linear-gradient(180deg, rgba(110,168,254,.28), rgba(110,168,254,.12));
+}
+.btnPrimary:hover{border-color: rgba(138,210,255,.8)}
+.btnGhost{background: rgba(255,255,255,.03)}
+
+.grid{
+  display:grid;
+  grid-template-columns: 1.25fr .75fr;
+  gap: 14px;
+  margin-top: 14px;
+}
+@media (max-width: 860px){
+  .grid{grid-template-columns:1fr}
+}
+
+.stat{
+  display:flex;
+  flex-direction:column;
+  gap:4px;
+  min-width: 96px;
+}
+.stat[hidden]{ display:none }
+.statLabel{font-size:12px; color: var(--muted)}
+.statValue{font-size:14px; font-variant-numeric: tabular-nums}
+
+.actions{display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end}
+
+.hintBox{
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.16);
+  line-height: 1.6;
+  min-height: 110px;
+  white-space: pre-wrap;
+}
+.hintStreaming::after{
+  content: '▋';
+  display: inline-block;
+  color: var(--primary);
+  animation: blink .7s step-start infinite;
+}
+@keyframes blink{
+  0%,100%{ opacity:1 }
+  50%{ opacity:0 }
+}
+
+.history{
+  margin: 0;
+  padding-left: 18px;
+  display:flex;
+  flex-direction:column;
+  gap: 8px;
+  overflow: hidden;
+  transition: height .3s cubic-bezier(.4,0,.2,1), opacity .25s ease;
+  opacity: 1;
+  /* height is set to explicit px by JS; starts at auto (expanded) */
+}
+.historyItem{
+  padding: 10px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.14);
+}
+.historyTop{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  gap:10px;
+}
+.historyGuess{
+  font-weight: 650;
+  letter-spacing:.3px;
+}
+.historyGuess .charGreen{
+  display: inline-block;
+  background: rgba(81,207,102,.20);
+  border: 1px solid rgba(81,207,102,.42);
+  border-radius: 4px;
+  padding: 0 3px;
+  color: var(--ok);
+}
+.historyGuess .charYellow{
+  display: inline-block;
+  background: rgba(255,212,59,.16);
+  border: 1px solid rgba(255,212,59,.38);
+  border-radius: 4px;
+  padding: 0 3px;
+  color: #ffd43b;
+}
+.historyBadge{
+  font-size:12px;
+  color: rgba(255,255,255,.82);
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(255,255,255,.05);
+}
+.badgeOk{border-color: rgba(81,207,102,.45); background: rgba(81,207,102,.12)}
+.badgeBad{border-color: rgba(255,107,107,.45); background: rgba(255,107,107,.12)}
+.historyHint{
+  margin-top: 6px;
+  color: var(--muted);
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+.footer{
+  margin-top: 14px;
+  color: var(--muted);
+  font-size: 12px;
+}
+.footerMsg{display:inline-block; padding: 2px 0}
+
+.dialog::backdrop{
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(6px);
+}
+.dialog{
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 18px;
+  padding: 0;
+  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(10,14,28,.95));
+  color: var(--text);
+  width: min(640px, calc(100vw - 24px));
+}
+.dialogInner{padding: 16px}
+.dialogTitle{margin: 0 0 10px; font-size: 16px}
+.dialogList{margin: 0; padding-left: 20px; color: var(--muted); line-height: 1.7}
+.dialogActions{display:flex; justify-content:flex-end; margin-top: 12px}
+
+.settingsGrid{
+  display:grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 8px;
+}
+.switchRow{
+  display:flex;
+  align-items:center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(0,0,0,.14);
+  color: rgba(255,255,255,.86);
+  user-select:none;
+}
+.switchRow input{transform: translateY(1px)}
+.settingsNote{
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+
+.difficultyRow{
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.difficultyRow[hidden]{ display:none }
+.diffLabel{
+  font-size: 12px;
+  color: var(--muted);
+}
+.diffBtn{
+  height: 30px;
+  padding: 0 14px;
+  font-size: 13px;
+  border-radius: 999px;
+}
+.diffBtnActive{
+  border-color: rgba(110,168,254,.8);
+  background: linear-gradient(180deg, rgba(110,168,254,.30), rgba(110,168,254,.14));
+  color: var(--primary2);
+}
+
+.dialogModeLabel{
+  margin: 0 0 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+.answerDisplay{
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.22);
+  font-size: 20px;
+  letter-spacing: .5px;
+  text-align: center;
+  margin-bottom: 4px;
+}
+.answerDisplay[hidden]{ display:none }
+
+/* ── Animations ─────────────────────────────────────────────────────────────── */
+
+/* Dialog open: slide up + fade in (triggered by JS class) */
+@keyframes dialogIn{
+  from{ opacity:0; transform:translateY(28px) scale(.95) }
+  to  { opacity:1; transform:translateY(0)    scale(1)   }
+}
+@keyframes dialogOut{
+  from{ opacity:1; transform:translateY(0)    scale(1)   }
+  to  { opacity:0; transform:translateY(14px) scale(.97) }
+}
+@keyframes backdropIn{
+  from{ opacity:0 }
+  to  { opacity:1 }
+}
+@keyframes backdropOut{
+  from{ opacity:1 }
+  to  { opacity:0 }
+}
+.dialogOpening{
+  animation: dialogIn .3s cubic-bezier(.34,1.15,.64,1) both;
+}
+.dialogClosing{
+  animation: dialogOut .2s ease both;
+  pointer-events: none;
+}
+.dialogOpening::backdrop{
+  animation: backdropIn .25s ease both;
+}
+.dialogClosing::backdrop{
+  animation: backdropOut .2s ease both;
+}
+
+/* New history item: slide up + fade in */
+@keyframes histItemIn{
+  from{ opacity:0; transform:translateY(14px) }
+  to  { opacity:1; transform:translateY(0)    }
+}
+.historyItemNew{
+  animation: histItemIn .3s cubic-bezier(.34,1.15,.64,1) both;
+}
+
+/* Hint box: fade + lift when content changes */
+@keyframes hintReveal{
+  from{ opacity:0; transform:translateY(8px) }
+  to  { opacity:1; transform:translateY(0)   }
+}
+.hintReveal{
+  animation: hintReveal .28s ease both;
+}
