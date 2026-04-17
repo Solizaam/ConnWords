@@ -49,6 +49,7 @@
             <span class="pillLabel">今日</span>
             <span id="dateKey" class="pillValue">-</span>
           </div>
+          <button id="btnTodayAnswer" class="btn btnGhost" type="button">今日答案</button>
         </div>
       </header>
 
@@ -163,6 +164,20 @@
           <div id="yesterdayAnswer" class="answerDisplay"></div>
           <div class="dialogActions">
             <button id="btnCloseYesterday" class="btn btnPrimary" type="button">关闭</button>
+          </div>
+        </div>
+      </dialog>
+
+      <dialog id="todayDialog" class="dialog">
+        <div class="dialogInner">
+          <h2 class="dialogTitle">今日答案</h2>
+          <p id="todayModeLabel" class="dialogModeLabel"></p>
+          <div id="todayAnswerWrap">
+            <button id="btnRevealToday" class="btn btnGhost" type="button">点击显示今日答案</button>
+            <div id="todayAnswer" class="answerDisplay" hidden></div>
+          </div>
+          <div class="dialogActions">
+            <button id="btnCloseToday" class="btn btnPrimary" type="button">关闭</button>
           </div>
         </div>
       </dialog>

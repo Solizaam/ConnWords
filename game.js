@@ -519,10 +519,16 @@ async function boot() {
   };
   const btnShare = el("btnShare");
   const btnYesterday = el("btnYesterday");
+  const btnTodayAnswer = el("btnTodayAnswer");
   const yesterdayDialog = el("yesterdayDialog");
+  const todayDialog = el("todayDialog");
   const yesterdayModeLabel = el("yesterdayModeLabel");
   const yesterdayAnswerEl = el("yesterdayAnswer");
+  const todayModeLabel = el("todayModeLabel");
+  const todayAnswerEl = el("todayAnswer");
+  const btnRevealToday = el("btnRevealToday");
   const btnCloseYesterday = el("btnCloseYesterday");
+  const btnCloseToday = el("btnCloseToday");
 
   let settings = loadSettings();
   let mode = normalizeMode({
