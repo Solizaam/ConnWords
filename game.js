@@ -416,7 +416,9 @@ async function generateSemanticHintViaLLM({ guess, answer, attemptIndex, history
   });
   if (!resp.ok) {
     const text = await resp.text().catch(() => "");
-    throw new Error(`LLM request failed: ${resp.status} ${text}`.slice(0, 220));
+    let detail = text;
+    try { detail = JSON.parse(text)?.error ?? text; } catch { /* raw text */ }
+    throw new Error(`${resp.status}: ${detail}`.slice(0, 300));
   }
 
   const reader = resp.body.getReader();
@@ -903,8 +905,9 @@ async function boot() {
         } catch (err) {
           clearInterval(thinkingTimer);
           hintBoxEl.classList.remove("hintStreaming");
+          const reason = err?.message ? `（${err.message}）` : "";
           hint =
-            "语义提示生成失败，已回退到本地提示。\n\n" +
+            `AI 提示失败，已回退到本地提示。${reason}\n\n` +
             (mode.language === "en"
               ? generateHint(guess, session.answer, attemptIndex)
               : generateHintCn(guess, session.answer, attemptIndex, mode.category));

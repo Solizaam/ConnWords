@@ -24,7 +24,11 @@ export default async function handler(req) {
 
   if (!upstream.ok) {
     const text = await upstream.text().catch(() => "");
-    return new Response(text, { status: upstream.status });
+    const detail = `${upstream.status} ${upstream.statusText} — ${text}`.slice(0, 400);
+    return new Response(JSON.stringify({ error: detail }), {
+      status: upstream.status,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 
   return new Response(upstream.body, {
