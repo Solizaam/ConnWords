@@ -132,23 +132,23 @@
             </label>
 
             <label class="field">
-              <span class="fieldLabel">API Base URL（OpenAI 兼容）</span>
+              <span class="fieldLabel">自定义 API Key（留空则使用内置服务）</span>
+              <input id="apiKey" class="input" placeholder="sk-…（留空使用内置，填写后使用你自己的 Key）" />
+            </label>
+
+            <label class="field">
+              <span class="fieldLabel">自定义 API Base URL（留空则使用内置服务）</span>
               <input id="apiBaseUrl" class="input" placeholder="https://api.openai.com/v1" />
             </label>
 
             <label class="field">
-              <span class="fieldLabel">Model</span>
+              <span class="fieldLabel">自定义 Model（留空则使用 gpt-4o-mini）</span>
               <input id="apiModel" class="input" placeholder="gpt-4o-mini / gpt-4.1-mini / 你的模型名" />
-            </label>
-
-            <label class="field">
-              <span class="fieldLabel">API Key（只保存在本机浏览器）</span>
-              <input id="apiKey" class="input" placeholder="sk-..." />
             </label>
           </div>
 
           <p class="settingsNote">
-            说明：开启后，每次猜错会调用接口生成一段"词义关系提示"。失败时会自动回退到本地字母提示。
+            默认使用内置 AI 服务，无需任何配置。如果你想使用自己的 API Key 或模型，填写上方字段即可覆盖。失败时会自动回退到本地字母提示。
           </p>
           <div class="dialogActions">
             <button id="btnSaveSettings" class="btn btnPrimary" type="button">保存</button>

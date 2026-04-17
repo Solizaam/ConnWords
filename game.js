@@ -292,9 +292,9 @@ function settingsKey() {
 
 function loadSettings() {
   const fallback = {
-    semanticEnabled: false,
-    apiBaseUrl: "https://api.openai.com/v1",
-    apiModel: "gpt-4o-mini",
+    semanticEnabled: true,
+    apiBaseUrl: "",
+    apiModel: "",
     apiKey: "",
     difficulty: "B1",
     language: "en",
@@ -348,8 +348,10 @@ function cacheSemanticHint(dateKey, mode, answer, guess, hint) {
 }
 
 async function generateSemanticHintViaLLM({ guess, answer, attemptIndex, historyGuesses, settings, mode, onChunk }) {
-  const base = (settings.apiBaseUrl || "").replace(/\/+$/, "");
-  const url = `${base}/chat/completions`;
+  const useProxy = !settings.apiKey;
+  const url = useProxy
+    ? "/api/hint"
+    : `${(settings.apiBaseUrl || "https://api.openai.com/v1").replace(/\/+$/, "")}/chat/completions`;
   const model = settings.apiModel || "gpt-4o-mini";
 
   const m = normalizeMode(mode);
@@ -405,12 +407,11 @@ async function generateSemanticHintViaLLM({ guess, answer, attemptIndex, history
     temperature: 0.7,
   };
 
+  const headers = { "Content-Type": "application/json" };
+  if (!useProxy) headers.Authorization = `Bearer ${settings.apiKey}`;
   const resp = await fetch(url, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${settings.apiKey}`,
-    },
+    headers,
     body: JSON.stringify({ ...body, stream: true }),
   });
   if (!resp.ok) {
@@ -869,7 +870,7 @@ async function boot() {
       const cached = settings.semanticEnabled ? loadCachedSemanticHint(session.dateKey, mode, session.answer, guess) : null;
       if (cached) {
         hint = cached;
-      } else if (settings.semanticEnabled && settings.apiKey && settings.apiBaseUrl) {
+      } else if (settings.semanticEnabled) {
         hintBoxEl.classList.add("hintStreaming");
 
         const thinkingPhrases = mode.language === "en"
